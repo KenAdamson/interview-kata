@@ -6,10 +6,15 @@ namespace wordle_word
 {
     internal class Program
     {
+        public static List<string> GetExistingWords()
+        {
+            return System.IO.File.ReadAllLines("./sgb-words.txt").ToList();
+        }
+
         static void Main(string[] args)
         {
             var wordDict = new Dictionary<char, float>();
-            var words = System.IO.File.ReadAllLines("./sgb-words.txt");
+            var words = GetExistingWords();
             foreach (var word in words)
             {
                 foreach (var c in word)
@@ -23,6 +28,8 @@ namespace wordle_word
                 }
             }
 
+            // -----------------------------------------------------------------------
+
             var scale = 0.5f;
             var ordered = wordDict.OrderByDescending(w => w.Value);
             var vowels = new List<char>() { 'a', 'e', 'i', 'o', 'u' };
@@ -33,9 +40,9 @@ namespace wordle_word
                     var val = item.Value + item.Value * scale;
                     wordDict[item.Key] = val;
                 }
-                // var line = $"{item.Key}: {item.Value}";
-                // Console.WriteLine(line);
             }
+
+            // -----------------------------------------------------------------------
 
             var wordScores = new Dictionary<string, float>();
             foreach (var word in words)
@@ -47,6 +54,8 @@ namespace wordle_word
 
                 wordScores[word] = GetScoreForWord(word, wordDict);
             }
+
+            // -----------------------------------------------------------------------
 
             var orderedByScores = wordScores.OrderByDescending(ws => ws.Value);
             foreach (var item in orderedByScores.Take(10))
@@ -65,5 +74,18 @@ namespace wordle_word
             }
             return score;
         }
+
+        // [HttpGet]
+        // public async Task<IActionResult> Get(string word)
+        // {
+        //     var words = GetExistingWords();
+        //     if (!words.Contains(word))
+        //     {
+        //         return new JsonResult(new { "Failure" });
+        //     }
+            
+        //     var score = GetScoreForWord(word, words);
+        //     return new JsonResult(new { score });
+        // }
     }
 }
