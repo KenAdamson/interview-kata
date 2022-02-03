@@ -1,0 +1,3 @@
+is_global = true
+build_property.RootNamespace = wordle_word
+build_property.ProjectDir = e:\src\wordle-kata\c#\wordle-kata\wordle-word\
