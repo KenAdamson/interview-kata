@@ -67,7 +67,7 @@ namespace wordle_word
         static float GetScoreForWord(string word, Dictionary<char, float> wordDict)
         {
             var score = 0f;
-            var currentWord = word.Distinct();
+            var currentWord = word.Distinct(); 
             foreach (var c in currentWord)
             {
                 score += wordDict[c];
